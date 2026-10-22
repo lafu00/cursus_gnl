@@ -15,12 +15,89 @@
 
 char	to_print(char *line)
 {
+	char	*out;
+	int	i;
+	char	c
 
+	c = '\n';
+	if (!line || !line[0])
+		return (NULL);
+	i = 0;
+	while (line[i] && line[i] != c)
+		i++;
+	if (line[i] == c)
+		out = malloc(sizeof(char) * (i + 2));
+	else
+		out = malloc(sizeof(char) * (i + 1));
+	if (!out)
+		return (NULL);
+	i = 0;
+	while(line[i] && line[i] != c)
+	{
+		out[i] = line[i];
+		i++;
+	}
+	if (line[i] == c)
+	{
+		out[i] = line[i];
+		i++;
+	}
+	out[i] = '\0';
+	return (out);
 }
 
-char	to_free(char	*line)
+char	to_free(char *line)
 {
+	char *new_line;
+	int	i;
+	int j;
+	char	c;
 
+	c = '\n';
+	i = 0;
+	while(line[i] && line[i] != c)
+		i++;
+	if (!line[i])
+	{
+		free(line);
+		return (NULL);
+	}
+/*	new_line = malloc(sizeof(char) * (ft_strlen(line) - i));
+	if (!new_line)
+	{
+		free(line);
+		return (NULL);
+	}
+	i++;
+	j = 0;
+	while(line[i + j])
+	{
+		new_line[j] = line[j + i];
+		j++;
+	}*/
+	new_line = ft_substr(line, i, ft_strlen(line) - i);
+	new_line[j] = '\0';
+	free(line);
+	return (new_line);
+}
+
+}
+char	*ft_strjoin_free(char *line, char *temp)
+{
+	char	*new_line;
+
+	if (!line)
+	{
+		line = (char *)malloc(sizeof (char) * 1);
+		if (!line)
+			return (NULL);
+		line[0] = '\0';
+	}
+	if (!temp)
+		return (NULL);
+	new_line = ft_strjoin(line, temp);
+	free(line);
+	return (new_line);
 }
 
 char	fill_line(int fd, char *line)
