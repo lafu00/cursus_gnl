@@ -6,7 +6,7 @@
 /*   By: rehlich <rehlich@student.42malaga.com >    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 11:05:58 by rehlich           #+#    #+#             */
-/*   Updated: 2026/10/23 11:03:08 by rehlich          ###   ########.fr       */
+/*   Updated: 2026/10/23 13:37:16 by rehlich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 # include <unistd.h>
 # include <stdlib.h>
-//# include <fcntl.h>
+# include <fcntl.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
 
-# ifndef MAX_SIZE
-#  define MAX_SIZE 1024
+# ifndef OPEN_MAX
+#  define OPEN_MAX 1024
 # endif
 
 char	*get_next_line(int fd);
