@@ -6,7 +6,7 @@
 /*   By: rehlich <rehlich@student.42malaga.com >    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 11:05:58 by rehlich           #+#    #+#             */
-/*   Updated: 2026/10/21 10:11:08 by rehlich          ###   ########.fr       */
+/*   Updated: 2026/10/23 11:00:52 by rehlich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@
 # include <fcntl.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE = 42
+#  define BUFFER_SIZE 42
 # endif
 
 char	*get_next_line(int fd);
+size_t	ft_strlen(char *str);
+char	*ft_strchr(char *s, int c);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_substr(char *s, size_t start, size_t len);
 
 #endif

@@ -6,18 +6,68 @@
 /*   By: rehlich <rehlich@student.42malaga.com >    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 11:04:18 by rehlich           #+#    #+#             */
-/*   Updated: 2026/10/22 11:54:33 by rehlich          ###   ########.fr       */
+/*   Updated: 2026/10/23 12:21:58 by rehlich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include "get_next_line.h"
 
-char	to_print(char *line)
+char	*ft_strjoin_free(char *line, char *temp)
+{
+	char	*new_line;
+
+	if (!line)
+	{
+		line = (char *) malloc(sizeof(char) * 1);
+		if (!line)
+			return (NULL);
+		line[0] = '\0';
+	}
+	if (!temp)
+		return (NULL);
+	new_line = ft_strjoin(line, temp);
+	free(line);
+	return (new_line);
+}
+
+char	*fill_line(int fd, char *line)
+{
+	int		buffer;
+	char	*temp;
+
+	if (!line)
+	{
+		line = malloc(sizeof(char) * 1);
+		if (!line)
+			return (NULL);
+		line[0] = '\0';
+	}
+	temp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!temp)
+		return (NULL);
+	buffer = 1;
+	while (!ft_strchr(line, '\n') && buffer > 0)
+	{
+		buffer = read(fd, temp, BUFFER_SIZE);
+		if (buffer == -1)
+		{
+			free(temp);
+			free(line);
+			return (NULL);
+		}
+		temp[buffer] = '\0';
+		line = ft_strjoin_free(line, temp);
+	}
+	free(temp);
+	return (line);
+}
+
+char	*to_print(char *line)
 {
 	char	*out;
-	int	i;
-	char	c
+	int		i;
+	char	c;
 
 	c = '\n';
 	if (!line || !line[0])
@@ -32,7 +82,7 @@ char	to_print(char *line)
 	if (!out)
 		return (NULL);
 	i = 0;
-	while(line[i] && line[i] != c)
+	while (line[i] && line[i] != c)
 	{
 		out[i] = line[i];
 		i++;
@@ -46,83 +96,39 @@ char	to_print(char *line)
 	return (out);
 }
 
-char	to_free(char *line)
+char	*to_free(char *line)
 {
-	char *new_line;
-	int	i;
-	int j;
+	char	*new_line;
+	size_t	i;
+	size_t	j;
 	char	c;
 
 	c = '\n';
 	i = 0;
-	while(line[i] && line[i] != c)
+	j = 0;
+	while (line[i] && line[i] != c)
 		i++;
 	if (!line[i])
 	{
 		free(line);
 		return (NULL);
 	}
-/*	new_line = malloc(sizeof(char) * (ft_strlen(line) - i));
+	/*	new_line = malloc(sizeof(char) * (ft_strlen(line) - i));
 	if (!new_line)
 	{
-		free(line);
-		return (NULL);
+	free(line);
+	return (NULL);
 	}
 	i++;
-	j = 0;
 	while(line[i + j])
 	{
-		new_line[j] = line[j + i];
-		j++;
+	new_line[j] = line[j + i];
+	j++;
 	}*/
 	new_line = ft_substr(line, i, ft_strlen(line) - i);
 	new_line[j] = '\0';
 	free(line);
 	return (new_line);
-}
-
-}
-char	*ft_strjoin_free(char *line, char *temp)
-{
-	char	*new_line;
-
-	if (!line)
-	{
-		line = (char *)malloc(sizeof (char) * 1);
-		if (!line)
-			return (NULL);
-		line[0] = '\0';
-	}
-	if (!temp)
-		return (NULL);
-	new_line = ft_strjoin(line, temp);
-	free(line);
-	return (new_line);
-}
-
-char	fill_line(int fd, char *line)
-{
-	int		buffer;
-	char	*temp;
-
-	temp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!temp)
-		return (NULL);
-	buffer = 1;
-	while (!ft_strchr(line,'\n') && buffer > 0)
-	{
-		buffer = read(fd, temp, BUFFER_SIZE)
-		if (buffer == -1)
-		{
-			free(temp);
-			free(line);
-			return (NULL);
-		}
-	temp[buffer] = '\0';
-	line = ft_strjoin_free(line, temp);
-	}
-free(temp);
-return (line);
 }
 
 char	*get_next_line(int fd)
@@ -132,7 +138,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = fill_line(fd, line)
+	line = fill_line(fd, line);
 	if (!line)
 		return (NULL);
 	out = to_print(line);
@@ -145,7 +151,7 @@ int	main(void)
 	int		fd;
 	char	*line;
 
-	fd = open(archivo.txt, O_RDONLY);
+	fd = open("archivo.txt", O_RDONLY);
 	if (fd < 0)
 		return (0);
 	line = get_next_line(fd);
