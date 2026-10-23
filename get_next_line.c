@@ -6,7 +6,7 @@
 /*   By: rehlich <rehlich@student.42malaga.com >    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/20 11:04:18 by rehlich           #+#    #+#             */
-/*   Updated: 2026/10/23 12:21:58 by rehlich          ###   ########.fr       */
+/*   Updated: 2026/10/23 12:26:22 by rehlich          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,9 +153,12 @@ int	main(void)
 
 	fd = open("archivo.txt", O_RDONLY);
 	if (fd < 0)
-		return (0);
-	line = get_next_line(fd);
-	printf("%s", line);
+		return (1);
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
 	close(fd);
 	return (0);
 }
